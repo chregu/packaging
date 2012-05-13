@@ -4,10 +4,14 @@ define('PACKAGING_CONFIG_PATH', 'packaging_config.php');
 
 function get_config($element = null) {
     if(!file_exists(PACKAGING_CONFIG_PATH)) {
-        die("Error: the file packaging_config.php file doesn't exist, you should copy the packaging/packaging_config.php.sample and customize it first. Also make sure you ran this command from your project root directory.\n");
+        if(!file_exists(dirname(__FILE__)."/../".PACKAGING_CONFIG_PATH)) {
+            die("Error: the file packaging_config.php file doesn't exist, you should copy the packaging/packaging_config.php.sample and customize it first. Also make sure you ran this command from your project root directory.\n");
+        } else {
+            $config = file_get_contents(dirname(__FILE__)."/../".PACKAGING_CONFIG_PATH);
+        }
+    } else {
+        $config = file_get_contents(PACKAGING_CONFIG_PATH);
     }
-
-    $config = file_get_contents(PACKAGING_CONFIG_PATH);
 
     if($config === false) {
         die("Error: unable to read the contents of packaging_config.php.\n");
