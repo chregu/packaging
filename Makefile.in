@@ -17,6 +17,9 @@ POSTRM=@POSTRM@
 PRERM=@PRERM@
 TEMPLATEDIR=@TEMPLATEDIR@
 TMP=@TMPDIR@
+PACKAGINGDIR=@PACKAGINGDIR@
+PACKAGINGPARENTDIR=@PACKAGINGPARENTDIR@
+PACKAGINGRELDIR=@PACKAGINGRELDIR@
 ENV=
 PTMP=$(TMP)/$(PACKAGENAME)
 
@@ -27,12 +30,12 @@ clean:
 
 structure: clean
 	mkdir -p $(PTMP)/src $(PTMP)/build $(PTMP)/misc
-	rsync -r --exclude packaging --exclude Makefile \
-		--exclude packaging_config.php --exclude '.git*' --exclude '.svn' \
+	rsync -r --exclude $(PACKAGINGRELDIR)/packaging --exclude Makefile \
+		--exclude $(PACKAGINGRELDIR)/packaging_config.php --exclude '.git*' --exclude '.svn' \
 		--exclude '.CVS' --exclude "$(TMP)" . $(PTMP)/src
 
 template: structure
-	./packaging/template $(PTMP)/src/$(TEMPLATEDIR) $(ENV)
+	$(PACKAGINGRELDIR)/$(PACKAGINGDIR)/template $(PTMP)/src/$(TEMPLATEDIR) $(ENV)
 
 build: template
 	@INSTALLCMD@

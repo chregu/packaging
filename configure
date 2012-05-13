@@ -20,6 +20,13 @@ $makefile = get_makefile_in();
 $install_cmd = get_install_cmd();
 
 $makefile = replace($makefile, 'INSTALLCMD', $install_cmd);
+$makefile = replace($makefile, 'PACKAGINGDIR', basename(dirname(__FILE__)));
+$makefile = replace($makefile, 'PACKAGINGPARENTDIR', dirname(dirname(__FILE__)));
+$packagereldir = str_replace(getcwd()."/","",dirname(dirname(__FILE__)));
+if ($packagereldir == dirname(dirname(__FILE__) )) {
+    $packagereldir = ".";
+    }
+$makefile = replace($makefile, 'PACKAGINGRELDIR', $packagereldir);
 $makefile = template($makefile, $configure, $flags);
 
 $fp = fopen('Makefile', 'w');
